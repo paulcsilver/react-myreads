@@ -6,7 +6,7 @@ class BookList extends React.Component {
   static shelves = [
     { id: 'currentlyReading', title: 'Currently Reading' },
     { id: 'wantToRead', title: 'Want to Read' },
-    { id: 'read', title: 'read' },
+    { id: 'read', title: 'Read' },
   ]
 
   render() {
