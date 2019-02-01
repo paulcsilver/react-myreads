@@ -11,7 +11,7 @@ const Book = props => {
       <div className="book-top">
         <div className="book-cover" style={{width: 128, height: 192, backgroundImage: `url("${bookCover}")` }} />
         <div className="book-shelf-changer">
-          <select defaultValue={bookShelf}>
+          <select onChange={(event) => props.moveBook(book, event.target.value)} defaultValue={bookShelf}>
             <option key="moveTo" value="moveTo" disabled>Move to...</option>
             {BookList.shelves.map((shelf) => (
               <option key={shelf.id} name={shelf.id} value={shelf.id}>{shelf.title}</option>

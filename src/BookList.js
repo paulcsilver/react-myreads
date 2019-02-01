@@ -10,8 +10,6 @@ class BookList extends React.Component {
   ]
 
   render() {
-    console.log('Book Shelves', BookList.shelves);
-
     return (
       <div className="list-books-content">
         {

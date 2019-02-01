@@ -13,17 +13,25 @@ class App extends React.Component {
   /**
   * @description Requests all books for the user
   */
-  requestBooks() {
+  requestBooks = () => {
     BooksAPI.getAll()
       .then((books) => {
         console.log(books); //TODO: remove
         this.setState(() => ({ books }));
+      }).catch((error) => {
+        console.log('Error requesting books: ', error);
       });
   }
 
 
-  moveBookToShelf(book, shelf) {
-    console.log(`Moving book: ${book} to shelf: ${shelf}`);
+  moveBookToShelf = (book, shelf) => {
+    console.log(`Moving book: ${book.id} to shelf: ${shelf}`);
+    BooksAPI.update(book, shelf)
+    .then(() => {
+      this.requestBooks();
+    }).catch((error) => {
+      console.log('Error updating book: ', error);
+    });
   }
 
   componentDidMount() {
