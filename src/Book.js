@@ -1,27 +1,28 @@
-import React from 'react'
+import React from 'react';
 import PropTypes from 'prop-types'
 
 const Book = props => {
-  // let book = this.props.book;
+  const book = props.book;
+  const bookCover = book.imageLinks.smallThumbnail;
   return (
     <div className="book">
       <div className="book-top">
-        <div className="book-cover" style={{width: 128, height: 192, }} />
+        <div className="book-cover" style={{width: 128, height: 192, backgroundImage: `url("${bookCover}")` }} />
         <div className="book-shelf-changer">
           <select>
             <option value="moveTo" disabled>Move to...</option>
           </select>
         </div>
       </div>
-      <div className="book-title">Book Title</div>
-      <div className="book-authors">Book Authors</div>
+      <div className="book-title">{book.title}</div>
+      <div className="book-authors">{book.authors.join(', ')}</div>
     </div>
   );
 }
 
-// Book.propTypes = {
-//   book: PropTypes.object.isRequired,
-//   changeShelf: PropTypes.func.isRequired,
-// };
+Book.propTypes = {
+  book: PropTypes.object.isRequired,
+  moveBook: PropTypes.func.isRequired,
+};
 
 export default Book
