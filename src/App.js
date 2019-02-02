@@ -63,7 +63,6 @@ class App extends React.Component {
         <Route path="/search" render={() => (
           <SearchBooks books={this.state.books} moveBook={this.moveBookToShelf} />
         )} />
-
       </div>
     )
   }
