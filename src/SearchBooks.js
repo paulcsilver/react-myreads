@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import Book from './Book'
+//import BookList from './BookList'
 
 class SearchBooks extends React.Component {
   state = {
@@ -21,7 +22,12 @@ class SearchBooks extends React.Component {
       BooksAPI.search(query)
         .then((results) => {
           console.log(results);
-          this.setState(() => ({ searchResults: results }));
+          let resultsWithShelves = [];
+          results.forEach((book) => {
+            book.shelf = this.shelfForSearchResult(book);
+            resultsWithShelves.push(book);
+          });
+          this.setState(() => ({ searchResults: resultsWithShelves }));
         }).catch((error) => {
           console.log('Error searching books: ', error);
           this.setState({ searchResults: [] });
@@ -29,6 +35,21 @@ class SearchBooks extends React.Component {
     } else {
       this.setState({ searchResults: [] });
     }
+  }
+
+  /*
+   * @description Determines the shelf of the given book if the book is on one of the user's shelves
+   * @param {Object} book - the book from the search BooksAPI
+   * @returns {String} the shelf ID or 'none'
+   */
+  shelfForSearchResult = (book) => {
+    let shelf = "none";
+    let bookOnShelf = this.props.bookMap.get(book.id);
+    if (bookOnShelf) {
+      shelf = bookOnShelf.shelf;
+    }
+
+    return shelf;
   }
 
   render() {
@@ -54,7 +75,7 @@ class SearchBooks extends React.Component {
 }
 
 SearchBooks.propTypes = {
-  books: PropTypes.array.isRequired,
+  bookMap: PropTypes.object.isRequired,
   moveBook: PropTypes.func.isRequired,
 }
 

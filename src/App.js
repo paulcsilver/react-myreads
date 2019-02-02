@@ -16,7 +16,6 @@ class App extends React.Component {
   requestBooks = () => {
     BooksAPI.getAll()
       .then((books) => {
-        console.log(books); //TODO: remove
         this.setState(() => ({ books }));
       }).catch((error) => {
         console.log('Error requesting books: ', error);
@@ -43,6 +42,10 @@ class App extends React.Component {
   }
 
   render() {
+    let bookMap = new Map();
+    this.state.books.map((book) => (
+      bookMap.set(book.id, book)
+    ));
     return (
       <div className="app">
 
@@ -61,7 +64,7 @@ class App extends React.Component {
         )} />
 
         <Route path="/search" render={() => (
-          <SearchBooks books={this.state.books} moveBook={this.moveBookToShelf} />
+          <SearchBooks bookMap={bookMap} moveBook={this.moveBookToShelf} />
         )} />
       </div>
     )
