@@ -42,6 +42,7 @@ class App extends React.Component {
   }
 
   render() {
+    // Create a map of the user books. This will be used to determine what shelf a search result is on
     let bookMap = new Map();
     this.state.books.map((book) => (
       bookMap.set(book.id, book)

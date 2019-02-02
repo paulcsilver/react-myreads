@@ -7,7 +7,8 @@ import Book from './Book'
 
 class SearchBooks extends React.Component {
   state = {
-    searchResults: []
+    searchResults: [],
+    noResults: false,
   }
 
   /*
@@ -15,19 +16,31 @@ class SearchBooks extends React.Component {
    * @param {String} query - the search string to use in the API
    */
   searchBooks = (query) => {
-    // Trim whitespace and only search of there is a string
+    // Trim whitespace and only search if there is a string
     // Otherwise clear the search results
     query = query.trim();
     if (query !== '') {
       BooksAPI.search(query)
         .then((results) => {
           console.log(results);
-          let resultsWithShelves = [];
+
+          // If the result set is empty, let the user no no results
+          if (results.error === 'empty query') {
+            this.setState(() => ({
+              noResults: true,
+              searchResults: []
+            }));
+          } else {
+            let resultsWithShelves = [];
           results.forEach((book) => {
             book.shelf = this.shelfForSearchResult(book);
             resultsWithShelves.push(book);
           });
-          this.setState(() => ({ searchResults: resultsWithShelves }));
+          this.setState(() => ({
+            searchResults: resultsWithShelves,
+            noResults: false
+          }));
+          }
         }).catch((error) => {
           console.log('Error searching books: ', error);
           this.setState({ searchResults: [] });
@@ -64,9 +77,12 @@ class SearchBooks extends React.Component {
 
         <div className="search-books-results">
           <ol className="books-grid">
-            {this.state.searchResults.length > 0 && this.state.searchResults.map((book) => (
+            {this.state.noResults ? (
+              <div><h3>No books found</h3></div>
+            ) : (
+              this.state.searchResults.length > 0 && this.state.searchResults.map((book) => (
               <li key={book.id}><Book book={book} moveBook={this.props.moveBook} /></li>
-            ))}
+            )))}
           </ol>
         </div>
       </div>
