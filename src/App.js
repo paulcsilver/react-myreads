@@ -11,8 +11,8 @@ class App extends React.Component {
   }
 
   /**
-  * @description Requests all books for the user
-  */
+   * @description Requests all books from the API
+   */
   requestBooks = () => {
     BooksAPI.getAll()
       .then((books) => {
@@ -23,7 +23,11 @@ class App extends React.Component {
       });
   }
 
-
+  /**
+   * @description Moves a book to a shelf
+   * @param {Object} book - a book
+   * @param {String} shelf - the shelf to move the book to
+   */
   moveBookToShelf = (book, shelf) => {
     console.log(`Moving book: ${book.id} to shelf: ${shelf}`);
     BooksAPI.update(book, shelf)
@@ -57,7 +61,7 @@ class App extends React.Component {
         )} />
 
         <Route path="/search" render={() => (
-          <SearchBooks />
+          <SearchBooks books={this.state.books} moveBook={this.moveBookToShelf} />
         )} />
 
       </div>

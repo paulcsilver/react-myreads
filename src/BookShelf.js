@@ -9,14 +9,14 @@ class BookShelf extends React.Component {
         <h2 className="bookshelf-title">{this.props.title}</h2>
         <div className="bookshelf-books">
           <ol className="books-grid">
-            {this.props.books.map((book) => (
-              <li key={book.id}>
-                <Book book={book} moveBook={this.props.moveBook} />
-              </li>
-            ))
-
-            }
-
+            {this.props.books.length > 0 ? (
+              this.props.books.map((book) => (
+                <li key={book.id}>
+                  <Book book={book} moveBook={this.props.moveBook} />
+                </li>
+              ))) : (
+                <div><h3>There are no books on this shelf.</h3></div>
+            )}
           </ol>
         </div>
       </div>
